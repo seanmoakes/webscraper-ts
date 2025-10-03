@@ -1,6 +1,5 @@
 import { URL } from "node:url";
-import { JSDOM } from 'jsdom'
-import * as path from "node:path";
+import { JSDOM } from "jsdom";
 
 export function normalizeURL(input: string) {
   const parsedURL = URL.parse(input);
@@ -10,9 +9,7 @@ export function normalizeURL(input: string) {
 
   const host = parsedURL.host;
   const stripTrailingSlash = (str: string) => {
-    return str.endsWith('/') ?
-      str.slice(0, -1) :
-      str;
+    return str.endsWith("/") ? str.slice(0, -1) : str;
   };
   const pathname = stripTrailingSlash(parsedURL.pathname);
 
@@ -99,7 +96,10 @@ export type ExtractedPageData = {
   image_urls: string[];
 };
 
-export function extractPageData(html: string, pageURL: string): ExtractedPageData {
+export function extractPageData(
+  html: string,
+  pageURL: string,
+): ExtractedPageData {
   return {
     url: pageURL,
     h1: getH1FromHTML(html),
@@ -107,4 +107,26 @@ export function extractPageData(html: string, pageURL: string): ExtractedPageDat
     outgoing_links: getURLsFromHTML(html, pageURL),
     image_urls: getImagesFromHTML(html, pageURL),
   };
+}
+
+export async function getHTML(url: string) {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "BootCrawler/1.0",
+      },
+    });
+    if (response.status > 400) {
+      console.error("Error getting html:", response.status);
+      return;
+    }
+
+    if (response.headers.get("Content-Type") !== "text/html") {
+      console.error("Wrong content type");
+    }
+    return response.text();
+
+  } catch (err) {
+    console.error(`failed to get HTML from ${url}:`, err);
+  }
 }

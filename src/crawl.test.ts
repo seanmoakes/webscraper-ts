@@ -1,20 +1,30 @@
-import { expect, test } from 'vitest';
-import { extractPageData, getFirstParagraphFromHTML, getH1FromHTML, getImagesFromHTML, getURLsFromHTML, normalizeURL } from './crawl';
+import { expect, test } from "vitest";
+import {
+  extractPageData,
+  getFirstParagraphFromHTML,
+  getH1FromHTML,
+  getImagesFromHTML,
+  getURLsFromHTML,
+  normalizeURL,
+} from "./crawl";
 
-test('Normalize URL', () => {
+test("Normalize URL", () => {
   expect(normalizeURL("https://blog.boot.dev/path")).toBe("blog.boot.dev/path");
 });
 
-test('Normalize URL with trailing slash', () => {
-  expect(normalizeURL("https://blog.boot.dev/path/")).toBe("blog.boot.dev/path");
+test("Normalize URL with trailing slash", () => {
+  expect(normalizeURL("https://blog.boot.dev/path/")).toBe(
+    "blog.boot.dev/path",
+  );
 });
 
-test('Invalid URL', () => {
-  expect(() => normalizeURL("fjdiowphfgreoiw")).toThrowError(new Error("invalid url"));
+test("Invalid URL", () => {
+  expect(() => normalizeURL("fjdiowphfgreoiw")).toThrowError(
+    new Error("invalid url"),
+  );
 });
 
-const html =
-  `<html>
+const html = `<html>
   <body>
     <h1>Welcome to Boot.dev</h1>
     <main>
@@ -24,7 +34,7 @@ const html =
   </body>
 </html>`;
 
-test('Get h1 from HTML', () => {
+test("Get h1 from HTML", () => {
   expect(getH1FromHTML(html).toString()).toBe("Welcome to Boot.dev");
 });
 
@@ -104,7 +114,6 @@ test("getImagesFromHTML absolute", () => {
   expect(actual).toEqual(expected);
 });
 
-
 test("getImagesFromHTML relative", () => {
   const inputURL = "https://blog.boot.dev";
   const inputBody = `<html><body><img src="/logo.png" alt="Logo"></body></html>`;
@@ -114,7 +123,6 @@ test("getImagesFromHTML relative", () => {
 
   expect(actual).toEqual(expected);
 });
-
 
 test("getImagesFromHTML relative clashing '/'s", () => {
   const inputURL = "https://blog.boot.dev/";
@@ -163,6 +171,3 @@ test("extractPageData basic", () => {
 
   expect(actual).toEqual(expected);
 });
-
-
-

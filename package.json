@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "tsx ./src/index.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "format:write": "prettier --write \"src/**/*.{js,ts,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,ts,json,css,md}\""
   },
   "author": "",
   "license": "ISC",
@@ -12,11 +14,19 @@
   "devDependencies": {
     "@types/jsdom": "^21.1.7",
     "@types/node": "^24.5.2",
+    "prettier": "^3.6.2",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   },
   "dependencies": {
     "jsdom": "^27.0.0"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "useTabs": false,
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": false
   }
 }
